@@ -1,0 +1,19 @@
+bjbtask design notes
+====================
+
+The initial implementation only uses a text (description) field
+
+Now this is working the information stored will be expanded
+
+For example
+  Context
+  Priority
+  Due date
+  Start date
+  
+Will need special command line syntax / handling for all of these
+
+Will need to change the "database" to store a set of lists rather than a set of text lines
+
+Will need to decide how to display the relevant information via the show command
+
