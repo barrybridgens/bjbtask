@@ -12,6 +12,8 @@ For example
   Start date
   
 Will need special command line syntax / handling for all of these
+  Context will use the common @context syntax
+  		  @context must either be before or after the distription text (may change later!)
 
 Will need to change the "database" to store a set of lists rather than a set of text lines
 

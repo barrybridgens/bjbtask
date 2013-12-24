@@ -5,6 +5,7 @@
 
 import sys
 import os.path
+import re
 import exceptions
 
 class bjbTask:
@@ -32,10 +33,30 @@ class bjbTask:
         self.save()
 
     def add(self, argv):
-        # Convert argumwnt list to a string
+        # Check arguments for special commands
+        # --- Context handling
+        context_found = False
+        num = 0
+        for arg in argv:
+            m = re.search('@.*', arg)
+            if m != None:
+                 context_found = True
+                 context_position = num
+                 context = argv[context_position]
+            num = num + 1
+        # Remove context from argument list
+        if context_found == True:
+            if context_position == 0:
+                argv = argv[1:]
+            else:
+                argv = argv[:(context_position)]
+        # --- End of Context handling
+        # Convert remaining argument list to a string
         text = " ".join(argv)
         bjbTask.tasks.append(text)
         print ("Task added: {}".format(text))
+        if context_found == True:
+            print ("Task added in context: {}".format(context))
 
     def show(self, argv):
         print ("Current Tasks")
