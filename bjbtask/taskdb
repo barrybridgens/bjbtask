@@ -1,5 +1,6 @@
-This is a test,--
-This is another task,@home
-fred,--
-wibble wobble shag bag,--
-pepper pig,@work
+one,--,--
+two,--,DONE
+three,--,--
+four,@home,--
+five,--,--
+six,--,--
