@@ -17,7 +17,8 @@ class bjbTask:
         if os.path.isfile("taskdb"):
             with open("taskdb", "r") as f:
                 for line in f:
-                        bjbTask.tasks.append(line.strip())
+                        bjbTask.tasks.append(line.strip().split(','))
+
 
     def arg_parse(self, argv):
         if argv[1] == 'add':
@@ -36,6 +37,7 @@ class bjbTask:
         # Check arguments for special commands
         # --- Context handling
         context_found = False
+        context = "--"
         num = 0
         for arg in argv:
             m = re.search('@.*', arg)
@@ -53,7 +55,8 @@ class bjbTask:
         # --- End of Context handling
         # Convert remaining argument list to a string
         text = " ".join(argv)
-        bjbTask.tasks.append(text)
+        task = [text, context]
+        bjbTask.tasks.append(task)
         print ("Task added: {}".format(text))
         if context_found == True:
             print ("Task added in context: {}".format(context))
@@ -62,7 +65,7 @@ class bjbTask:
         print ("Current Tasks")
         num = 0
         for task in bjbTask.tasks:
-            print ("{}   {}".format((num + 1), task))
+            print ("{:3} {:30} {}".format((num + 1), task[0], task[1]))
             num = num + 1
 
     def delete(self, argv):
@@ -108,8 +111,8 @@ class bjbTask:
     def save(self):
         # Overwrite file with all current data - THIS WILL NOT SCALE!!!!
          with open("taskdb", "w") as f:
-             for line in bjbTask.tasks:
-                 f.write("{}\n".format(line.strip()))
+             for task in bjbTask.tasks:
+                 f.write("{},{}\n".format(task[0].strip(), task[1]))
 
 if __name__ == "__main__":
     bjb_task = bjbTask()
