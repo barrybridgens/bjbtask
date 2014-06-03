@@ -6,7 +6,7 @@
 import sys
 import os.path
 import re
-import exceptions
+# import exceptions
 
 class bjbTask:
 
@@ -21,18 +21,21 @@ class bjbTask:
 
 
     def arg_parse(self, argv):
-        if argv[1] == 'add':
-            self.add(argv[2:])
-        elif argv[1] == 'show':
-            self.show(argv[2:])
-        elif argv[1] == 'done':
-            self.done(argv[2:])
-        elif ((argv[1] == 'del') or (argv[1] == 'delete')):
-            self.delete(argv[2:])
-        elif ((argv[1] == 'help') or (argv[1] == '?')):
-            self.help(argv[2:])
+        if (len(argv) < 2):
+            print ("No command specified (try bjbtask.py help)")
         else:
-            print ("Command not recognised: {}".format(argv[1]))
+            if argv[1] == 'add':
+                self.add(argv[2:])
+            elif argv[1] == 'show':
+                self.show(argv[2:])
+            elif argv[1] == 'done':
+                self.done(argv[2:])
+            elif ((argv[1] == 'del') or (argv[1] == 'delete')):
+                self.delete(argv[2:])
+            elif ((argv[1] == 'help') or (argv[1] == '?')):
+                self.help(argv[2:])
+            else:
+                print ("Command not recognised: {}".format(argv[1]))
         self.save()
 
     def add(self, argv):
