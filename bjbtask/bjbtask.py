@@ -11,11 +11,17 @@ import re
 class bjbTask:
 
     # Class variables
+    db_file = "taskdb"
     tasks = []
 
     def __init__(self):
-        if os.path.isfile("taskdb"):
-            with open("taskdb", "r") as f:
+        # Check for config file
+        if os.path.isfile(os.path.expanduser("~/.bjbtask")):
+            with open(os.path.expanduser("~/.bjbtask")) as f:
+                self.db_file =  f.readline()
+        # Read database
+        if os.path.isfile(os.path.expanduser(self.db_file)):
+            with open(os.path.expanduser(self.db_file), "r") as f:
                 for line in f:
                         bjbTask.tasks.append(line.strip().split(','))
 
@@ -32,6 +38,8 @@ class bjbTask:
                 self.done(argv[2:])
             elif ((argv[1] == 'del') or (argv[1] == 'delete')):
                 self.delete(argv[2:])
+            elif argv[1] == 'init':
+                self.init()
             elif ((argv[1] == 'help') or (argv[1] == '?')):
                 self.help(argv[2:])
             else:
@@ -111,6 +119,10 @@ class bjbTask:
             if invalid != True:
                 print ("Task mumber out of range: {}".format(num))
 
+    def init(self):
+        f = open(os.path.expanduser(self.db_file),"w+")
+        f.close()
+
     def help(self, argv):
         if len(argv) < 1:
             arg = "no arg"
@@ -144,9 +156,9 @@ class bjbTask:
 
     def save(self):
         # Overwrite file with all current data - THIS WILL NOT SCALE!!!!
-         with open("taskdb", "w") as f:
-             for task in bjbTask.tasks:
-                 f.write("{},{},{}\n".format(task[0].strip(), task[1], task[2]))
+        with open(os.path.expanduser(self.db_file), "w") as f:
+            for task in bjbTask.tasks:
+                f.write("{},{},{}\n".format(task[0].strip(), task[1], task[2]))
 
 if __name__ == "__main__":
     bjb_task = bjbTask()
