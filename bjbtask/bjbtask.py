@@ -10,6 +10,13 @@ import re
 
 class bjbTask:
 
+    # Class "constants"
+    TEXT = 0
+    CONTEXT = 1
+    DONE = 2
+    DUE_DATE = 3
+    START_DATE = 4
+        
     # Class variables
     db_file = "taskdb"
     tasks = []
@@ -82,11 +89,15 @@ class bjbTask:
             arg = '--'
         num = 0
         for task in bjbTask.tasks:
-            if ((arg == 'all') or (task[2] == '--')):
-                if (arg == 'all'):
-                    print ("{:<3} {:30} {:20} {}".format((num + 1), task[0], task[1], task[2]))
-                else:
-                    print ("{:<3} {:30} {}".format((num + 1), task[0], task[1]))
+            if (arg[0] == "@"):
+                if (arg == task[self.CONTEXT]):
+                    print ("{:<3} {:30}".format((num + 1), task[self.TEXT]))
+            else:
+                if ((arg == 'all') or (task[self.DONE] == '--')):
+                    if (arg == 'all'):
+                        print ("{:<3} {:30} {:20} {}".format((num + 1), task[self.TEXT], task[self.CONTEXT], task[self.DONE]))
+                    else:
+                        print ("{:<3} {:30} {}".format((num + 1), task[self.TEXT], task[self.CONTEXT]))
             num = num + 1
 
     def done(self, argv):
@@ -158,7 +169,7 @@ class bjbTask:
         # Overwrite file with all current data - THIS WILL NOT SCALE!!!!
         with open(os.path.expanduser(self.db_file), "w") as f:
             for task in bjbTask.tasks:
-                f.write("{},{},{}\n".format(task[0].strip(), task[1], task[2]))
+                f.write("{},{},{}\n".format(task[self.TEXT].strip(), task[self.CONTEXT], task[self.DONE]))
 
 if __name__ == "__main__":
     bjb_task = bjbTask()
