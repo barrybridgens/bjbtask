@@ -133,8 +133,13 @@ class bjbTask:
                 print ("Task mumber out of range: {}".format(num))
 
     def archive(self, argv):
-        print ("*** Archive command comming soon ***")
-
+        with open(os.path.expanduser("~/.bjbtask_archive"), "a") as f:
+            # Inerate over a copy of the task list
+            for task in bjbTask.tasks[:]:
+                if task[self.DONE] == "DONE":
+                    f.write("{},{},{}\n".format(task[self.TEXT].strip(), task[self.CONTEXT], task[self.DONE]))
+                    print ("Task archived: {}".format(task))
+                    bjbTask.tasks.remove(task)
     def init(self):
         f = open(os.path.expanduser(self.db_file),"w+")
         f.close()
