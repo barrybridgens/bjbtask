@@ -16,7 +16,7 @@ class bjbTask:
     DONE = 2
     DUE_DATE = 3
     START_DATE = 4
-        
+
     # Class variables
     db_file = "taskdb"
     tasks = []
@@ -45,6 +45,8 @@ class bjbTask:
                 self.done(argv[2:])
             elif ((argv[1] == 'del') or (argv[1] == 'delete')):
                 self.delete(argv[2:])
+            elif argv[1] == 'archive':
+                self.archive(argv[2:])
             elif argv[1] == 'init':
                 self.init()
             elif ((argv[1] == 'help') or (argv[1] == '?')):
@@ -130,6 +132,9 @@ class bjbTask:
             if invalid != True:
                 print ("Task mumber out of range: {}".format(num))
 
+    def archive(self, argv):
+        print ("*** Archive command comming soon ***")
+
     def init(self):
         f = open(os.path.expanduser(self.db_file),"w+")
         f.close()
@@ -158,12 +163,17 @@ class bjbTask:
             print ("   del <task number>")
             print ("   delete <task number>")
             print ("Deletes the task with the given number")
+        elif arg == archive:
+            print ("bjbtask archive command - archive completed tasks")
+            print ("    archive")
+            print ("Moves completed tasks into the archive file")
         else:
             print ("bjbtask commands")
             print ("   add - add a task")
             print ("   show - show tasks")
             print ("   done - mark a task as done")
             print ("   del or delete - delete a task")
+            print ("   archive - archive completed tasks")
 
     def save(self):
         # Overwrite file with all current data - THIS WILL NOT SCALE!!!!
