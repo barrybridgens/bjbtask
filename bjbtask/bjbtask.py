@@ -159,7 +159,7 @@ class bjbTask:
             print ("   show [all]")
             print ("Print all tasks prepended with a task number")
             print ("The number is used to identify the task for other commands")
-            print ("with all modifier even done tasks are displayed")
+            print ("with all modifier even completed tasks are displayed")
         elif arg == 'done':
             print ("bjb task done commend - mark a task as done")
             print ("   done <task number>")
@@ -168,9 +168,9 @@ class bjbTask:
             print ("   del <task number>")
             print ("   delete <task number>")
             print ("Deletes the task with the given number")
-        elif arg == archive:
+        elif arg == 'archive':
             print ("bjbtask archive command - archive completed tasks")
-            print ("    archive")
+            print ("   archive")
             print ("Moves completed tasks into the archive file")
         else:
             print ("bjbtask commands")
