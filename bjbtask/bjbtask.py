@@ -105,7 +105,7 @@ class bjbTask:
     def done(self, argv):
         try:
             num = int(argv[0])
-        except exceptions.ValueError:
+        except ValueError:
             print ("Error: Task number not valid")
             num = len(bjbTask.tasks) + 1
             invalid = True
@@ -120,7 +120,7 @@ class bjbTask:
     def delete(self, argv):
         try:
             num = int(argv[0])
-        except exceptions.ValueError:
+        except ValueError:
             print ("Error: Task number not valid")
             num = len(bjbTask.tasks) + 1
             invalid = True
