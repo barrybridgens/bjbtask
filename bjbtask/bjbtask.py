@@ -13,7 +13,7 @@ class bjbTask:
     # Class "constants"
     TEXT = 0
     CONTEXT = 1
-    DONE = 2
+    STATUS = 2
     DUE_DATE = 3
     START_DATE = 4
 
@@ -41,6 +41,8 @@ class bjbTask:
                 self.add(argv[2:])
             elif argv[1] == 'show':
                 self.show(argv[2:])
+            elif argv[1] == 'board':
+                self.board()
             elif argv[1] == 'start':
                 self.start(argv[2:])
             elif argv[1] == 'done':
@@ -97,12 +99,48 @@ class bjbTask:
                 if (arg == task[self.CONTEXT]):
                     print ("{:<3} {:30}".format((num + 1), task[self.TEXT]))
             else:
-                if ((arg == 'all') or (task[self.DONE] != 'DONE')):
+                if ((arg == 'all') or (task[self.STATUS] != 'DONE')):
                     if (arg == 'all'):
                         print ("{:<3} {:30} {:20} {}".format((num + 1), task[self.TEXT], task[self.CONTEXT], task[self.DONE]))
                     else:
                         print ("{:<3} {:30} {}".format((num + 1), task[self.TEXT], task[self.CONTEXT]))
             num = num + 1
+
+    def print_spaces(self, num):
+        for space in range(num):
+            print (" ", end = '')
+
+    def board(self):
+        line = 0
+        backlog = []
+        started = []
+        done = []
+        for task in bjbTask.tasks:
+            if task[self.STATUS] == '--':
+                backlog.append(task[self.TEXT])
+            if task[self.STATUS] == 'STARTED':
+                started.append(task[self.TEXT])
+            if task[self.STATUS] == 'DONE':
+                done.append(task[self.TEXT])
+
+        print ("Backlog                  Started                  Done")
+        print ("-------                  -------                  ----")
+        while ((line < len(backlog)) or (line < len(started)) or (line < len(done))):
+            if line < len(backlog):
+                print (backlog[line], end = '')
+                self.print_spaces(25 - len(backlog[line]))
+            else:
+                print ("               ", end = '')
+            if line < len(started):
+                print (started[line], end = '')
+                self.print_spaces(25 - len(started[line]))
+            else:
+                print ("               ", end = '')
+            if line < len(done):
+                print (done[line])
+            else:
+                print ("               ")
+            line = line + 1
 
     def done(self, argv):
         try:
@@ -113,7 +151,7 @@ class bjbTask:
             invalid = True
         if ((num > 0) and ((num <= len(bjbTask.tasks)))):
             text = bjbTask.tasks[num - 1]
-            bjbTask.tasks[num - 1][2] = "DONE"
+            bjbTask.tasks[num - 1][self.STATUS] = "DONE"
             print ("Task marked as done: {}".format(text))
         else:
             if invalid != True:
@@ -128,7 +166,7 @@ class bjbTask:
             invalid = True
         if ((num > 0) and ((num <= len(bjbTask.tasks)))):
             text = bjbTask.tasks[num - 1]
-            bjbTask.tasks[num - 1][2] = "STARTED"
+            bjbTask.tasks[num - 1][self.STATUS] = "STARTED"
             print ("Task marked as started: {}".format(text))
         else:
             if invalid != True:
@@ -153,8 +191,8 @@ class bjbTask:
         with open(os.path.expanduser("~/.bjbtask_archive"), "a") as f:
             # Inerate over a copy of the task list
             for task in bjbTask.tasks[:]:
-                if task[self.DONE] == "DONE":
-                    f.write("{},{},{}\n".format(task[self.TEXT].strip(), task[self.CONTEXT], task[self.DONE]))
+                if task[self.STATUS] == "DONE":
+                    f.write("{},{},{}\n".format(task[self.TEXT].strip(), task[self.CONTEXT], task[self.STATUS]))
                     print ("Task archived: {}".format(task))
                     bjbTask.tasks.remove(task)
     def init(self):
@@ -177,6 +215,9 @@ class bjbTask:
             print ("Print all tasks prepended with a task number")
             print ("The number is used to identify the task for other commands")
             print ("with all modifier even completed tasks are displayed")
+        elif arg == 'board':
+            print ("bjbtask board command - show task board")
+            print ("   board")
         elif arg == 'start':
             print ("bjbtask start command - start a task")
             print ("   start <task number>")
@@ -196,6 +237,7 @@ class bjbTask:
             print ("bjbtask commands")
             print ("   add - add a task")
             print ("   show - show tasks")
+            print ("   board - show a task (canban) board")
             print ("   start - mark a task as started")
             print ("   done - mark a task as done")
             print ("   del or delete - delete a task")
@@ -205,9 +247,9 @@ class bjbTask:
         # Overwrite file with all current data - THIS WILL NOT SCALE!!!!
         with open(os.path.expanduser(self.db_file), "w") as f:
             for task in bjbTask.tasks:
-                f.write("{},{},{}\n".format(task[self.TEXT].strip(), task[self.CONTEXT], task[self.DONE]))
+                f.write("{},{},{}\n".format(task[self.TEXT].strip(), task[self.CONTEXT], task[self.STATUS]))
 
 if __name__ == "__main__":
     bjb_task = bjbTask()
-    
+
     bjb_task.arg_parse(sys.argv)
