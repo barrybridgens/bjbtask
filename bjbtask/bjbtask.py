@@ -41,6 +41,8 @@ class bjbTask:
                 self.add(argv[2:])
             elif argv[1] == 'show':
                 self.show(argv[2:])
+            elif argv[1] == 'start':
+                self.start(argv[2:])
             elif argv[1] == 'done':
                 self.done(argv[2:])
             elif ((argv[1] == 'del') or (argv[1] == 'delete')):
@@ -95,7 +97,7 @@ class bjbTask:
                 if (arg == task[self.CONTEXT]):
                     print ("{:<3} {:30}".format((num + 1), task[self.TEXT]))
             else:
-                if ((arg == 'all') or (task[self.DONE] == '--')):
+                if ((arg == 'all') or (task[self.DONE] != 'DONE')):
                     if (arg == 'all'):
                         print ("{:<3} {:30} {:20} {}".format((num + 1), task[self.TEXT], task[self.CONTEXT], task[self.DONE]))
                     else:
@@ -113,6 +115,21 @@ class bjbTask:
             text = bjbTask.tasks[num - 1]
             bjbTask.tasks[num - 1][2] = "DONE"
             print ("Task marked as done: {}".format(text))
+        else:
+            if invalid != True:
+                print ("Task mumber out of range: {}".format(num))
+
+    def start(self, argv):
+        try:
+            num = int(argv[0])
+        except ValueError:
+            print ("Error: Task number not valid")
+            num = len(bjbTask.tasks) + 1
+            invalid = True
+        if ((num > 0) and ((num <= len(bjbTask.tasks)))):
+            text = bjbTask.tasks[num - 1]
+            bjbTask.tasks[num - 1][2] = "STARTED"
+            print ("Task marked as started: {}".format(text))
         else:
             if invalid != True:
                 print ("Task mumber out of range: {}".format(num))
@@ -160,6 +177,9 @@ class bjbTask:
             print ("Print all tasks prepended with a task number")
             print ("The number is used to identify the task for other commands")
             print ("with all modifier even completed tasks are displayed")
+        elif arg == 'start':
+            print ("bjbtask start command - start a task")
+            print ("   start <task number>")
         elif arg == 'done':
             print ("bjb task done commend - mark a task as done")
             print ("   done <task number>")
@@ -176,6 +196,7 @@ class bjbTask:
             print ("bjbtask commands")
             print ("   add - add a task")
             print ("   show - show tasks")
+            print ("   start - mark a task as started")
             print ("   done - mark a task as done")
             print ("   del or delete - delete a task")
             print ("   archive - archive completed tasks")
@@ -188,4 +209,5 @@ class bjbTask:
 
 if __name__ == "__main__":
     bjb_task = bjbTask()
+    
     bjb_task.arg_parse(sys.argv)
