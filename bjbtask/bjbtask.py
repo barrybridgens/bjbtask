@@ -25,12 +25,14 @@ class bjbTask:
         # Check for config file
         if os.path.isfile(os.path.expanduser("~/.bjbtask")):
             with open(os.path.expanduser("~/.bjbtask")) as f:
-                self.db_file =  f.readline()
+                self.db_file =  f.readline().strip()
         # Read database
         if os.path.isfile(os.path.expanduser(self.db_file)):
             with open(os.path.expanduser(self.db_file), "r") as f:
                 for line in f:
                         bjbTask.tasks.append(line.strip().split(','))
+        else:
+            print("ERROR: Database file not found")
 
 
     def arg_parse(self, argv):
