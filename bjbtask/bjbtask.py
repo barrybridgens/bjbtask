@@ -41,8 +41,8 @@ class bjbTask:
         else:
             if argv[1] == 'add':
                 self.add(argv[2:])
-            elif argv[1] == 'show':
-                self.show(argv[2:])
+            elif argv[1] == 'list':
+                self.list(argv[2:])
             elif argv[1] == 'board':
                 self.board()
             elif argv[1] == 'start':
@@ -89,7 +89,7 @@ class bjbTask:
         if context_found == True:
             print ("Task added in context: {}".format(context))
 
-    def show(self, argv):
+    def list(self, argv):
         print ("Current Tasks")
         if len(argv) >= 1:
             arg = argv[0]
@@ -103,7 +103,7 @@ class bjbTask:
             else:
                 if ((arg == 'all') or (task[self.STATUS] != 'DONE')):
                     if (arg == 'all'):
-                        print ("{:<3} {:30} {:20} {}".format((num + 1), task[self.TEXT], task[self.CONTEXT], task[self.DONE]))
+                        print ("{:<3} {:30} {:20} {}".format((num + 1), task[self.TEXT], task[self.CONTEXT], task[self.STATUS]))
                     else:
                         print ("{:<3} {:30} {}".format((num + 1), task[self.TEXT], task[self.CONTEXT]))
             num = num + 1
@@ -211,9 +211,9 @@ class bjbTask:
             print ("   add [@context] <task description> [@context]")
             print ("Add a new task with the given description to the database")
             print ("Put @context_name as the first or last word to make the task context @context_name")
-        elif arg == 'show':
-            print ("bjbtask show command - show tasks")
-            print ("   show [all]")
+        elif arg == 'list':
+            print ("bjbtask list command - list tasks")
+            print ("   list [all]")
             print ("Print all tasks prepended with a task number")
             print ("The number is used to identify the task for other commands")
             print ("with all modifier even completed tasks are displayed")
@@ -238,7 +238,7 @@ class bjbTask:
         else:
             print ("bjbtask commands")
             print ("   add - add a task")
-            print ("   show - show tasks")
+            print ("   list - list tasks")
             print ("   board - show a task (canban) board")
             print ("   start - mark a task as started")
             print ("   done - mark a task as done")
