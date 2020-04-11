@@ -39,11 +39,11 @@ class bjbTask:
         if (len(argv) < 2):
             print ("No command specified (try bjbtask.py help)")
         else:
-            if argv[1] == 'add':
+            if ((argv[1] == 'add') or (argv[1] == 'a')):
                 self.add(argv[2:])
-            elif argv[1] == 'list':
+            elif ((argv[1] == 'list') or (argv[1] == 'l')):
                 self.list(argv[2:])
-            elif argv[1] == 'board':
+            elif ((argv[1] == 'board') or (argv[1] == 'b')):
                 self.board()
             elif argv[1] == 'start':
                 self.start(argv[2:])
@@ -206,20 +206,23 @@ class bjbTask:
             arg = "no arg"
         else:
             arg = argv[0]
-        if arg == 'add':
+        if ((arg == 'add') or (arg == 'a')):
             print ("bjbtask add command - add a task")
             print ("   add [@context] <task description> [@context]")
+            print ("   Short command name a")
             print ("Add a new task with the given description to the database")
             print ("Put @context_name as the first or last word to make the task context @context_name")
         elif arg == 'list':
             print ("bjbtask list command - list tasks")
             print ("   list [all]")
+            print ("   Short command name l")
             print ("Print all tasks prepended with a task number")
             print ("The number is used to identify the task for other commands")
             print ("with all modifier even completed tasks are displayed")
         elif arg == 'board':
             print ("bjbtask board command - show task board")
             print ("   board")
+            print ("   Short command name b")
         elif arg == 'start':
             print ("bjbtask start command - start a task")
             print ("   start <task number>")
