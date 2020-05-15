@@ -212,14 +212,14 @@ class bjbTask:
             print ("   Short command name a")
             print ("Add a new task with the given description to the database")
             print ("Put @context_name as the first or last word to make the task context @context_name")
-        elif arg == 'list':
+        elif ((arg == 'list') or (arg == 'l')):
             print ("bjbtask list command - list tasks")
             print ("   list [all]")
             print ("   Short command name l")
             print ("Print all tasks prepended with a task number")
             print ("The number is used to identify the task for other commands")
             print ("with all modifier even completed tasks are displayed")
-        elif arg == 'board':
+        elif ((arg == 'board') or (arg == 'b')):
             print ("bjbtask board command - show task board")
             print ("   board")
             print ("   Short command name b")
