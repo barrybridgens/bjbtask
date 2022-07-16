@@ -21,3 +21,10 @@ Will need to change the "database" to store a set of lists rather than a set of 
 Will need to decide how to display the relevant information via the show command
 
 An archive command will remove "DONE" entries from the database and append them to an archive file
+
+A Todo command fill print a filtered list of tasks to be done
+Filtering will be based on
+	  Context (optionally)
+	  Start date older than today
+	  Due date newer than Today - x days
+	  Depend tasks all done
