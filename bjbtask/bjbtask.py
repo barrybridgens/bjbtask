@@ -46,7 +46,7 @@ class bjbTask:
             elif ((argv[1] == 'list') or (argv[1] == 'l')):
                 self.list(argv[2:])
             elif ((argv[1] == 'board') or (argv[1] == 'b')):
-                self.board()
+                self.board(argv[2:])
             elif argv[1] == 'start':
                 self.start(argv[2:])
             elif argv[1] == 'done':
@@ -135,17 +135,25 @@ class bjbTask:
         for space in range(num):
             print (" ", end = '')
 
-    def board(self):
+    def board(self, argv):
         line = 0
         backlog = []
         started = []
         done = []
+        context='--'
+
+        if len(argv) >= 1:
+            context = argv[0]
+            m = re.search('@.*', context)
+            if m == None:
+                context = '@' + context
+                
         for task in bjbTask.tasks:
-            if task[self.STATUS] == '--':
-                backlog.append(task[self.TEXT])
-            if task[self.STATUS] == 'STARTED':
+            if ((task[self.STATUS] == '--') and ((task[self.CONTEXT] == context) or (context == '--'))):
+                backlog.append(task[self.TEXT]) 
+            if ((task[self.STATUS] == 'STARTED') and ((task[self.CONTEXT] == context) or (context == '--'))):
                 started.append(task[self.TEXT])
-            if task[self.STATUS] == 'DONE':
+            if ((task[self.STATUS] == 'DONE') and ((task[self.CONTEXT] == context) or (context == '--'))):
                 done.append(task[self.TEXT])
 
         print ("Backlog                  Started                  Done")
@@ -249,8 +257,8 @@ class bjbTask:
             print ("The number is used to identify the task for other commands")
             print ("with all modifier even completed tasks are displayed")
         elif ((arg == 'board') or (arg == 'b')):
-            print ("bjbtask board command - show task board")
-            print ("   board")
+            print ("bjbtask board command - show task board - optionaly filtered by context")
+            print ("   board <context>")
             print ("   Short command name b")
         elif arg == 'start':
             print ("bjbtask start command - start a task")
