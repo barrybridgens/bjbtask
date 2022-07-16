@@ -8,6 +8,7 @@ Now this is working the information stored will be expanded
 For example
   Context
   Priority
+  Dependencies
   Due date
   Start date
 

@@ -41,6 +41,8 @@ class bjbTask:
         else:
             if ((argv[1] == 'add') or (argv[1] == 'a')):
                 self.add(argv[2:])
+            elif ((argv[1] == 'context') or (argv[1] == 'c')):
+                self.set_context(argv[2:])
             elif ((argv[1] == 'list') or (argv[1] == 'l')):
                 self.list(argv[2:])
             elif ((argv[1] == 'board') or (argv[1] == 'b')):
@@ -89,6 +91,27 @@ class bjbTask:
         if context_found == True:
             print ("Task added in context: {}".format(context))
 
+    def set_context(self, argv):
+        try:
+            num = int(argv[0])
+        except ValueError:
+            print ("Error: Task number not valid")
+            num = len(bjbTask.tasks) + 1
+            invalid = True
+        if ((num > 0) and ((num <= len(bjbTask.tasks)))):
+            text = bjbTask.tasks[num - 1]
+            if len(argv) >= 2:
+                context = argv[1]
+                m = re.search('@.*', context)
+                if m == None:
+                    context = '@' + context
+                
+                bjbTask.tasks[num - 1][self.CONTEXT] = context
+                print ("Context set for task: {}".format(text))
+        else:
+            if invalid != True:
+                print ("Task mumber out of range: {}".format(num))
+            
     def list(self, argv):
         print ("Current Tasks")
         if len(argv) >= 1:
@@ -132,12 +155,14 @@ class bjbTask:
                 print (backlog[line], end = '')
                 self.print_spaces(25 - len(backlog[line]))
             else:
-                print ("               ", end = '')
+                # print ("               ", end = '')
+                self.print_spaces(25)
             if line < len(started):
                 print (started[line], end = '')
                 self.print_spaces(25 - len(started[line]))
             else:
-                print ("               ", end = '')
+                # print ("               ", end = '')
+                self.print_spaces(25)
             if line < len(done):
                 print (done[line])
             else:
@@ -212,6 +237,10 @@ class bjbTask:
             print ("   Short command name a")
             print ("Add a new task with the given description to the database")
             print ("Put @context_name as the first or last word to make the task context @context_name")
+        if ((arg == 'context') or (arg == 'c')):
+            print ("bjbtask context command - set the context for a task")
+            print ("   context <task number> <context>")
+            print ("   Short command name c")
         elif ((arg == 'list') or (arg == 'l')):
             print ("bjbtask list command - list tasks")
             print ("   list [all]")
@@ -241,6 +270,7 @@ class bjbTask:
         else:
             print ("bjbtask commands")
             print ("   add - add a task")
+            print ("   context - set the context for an existing task")
             print ("   list - list tasks")
             print ("   board - show a task (canban) board")
             print ("   start - mark a task as started")
